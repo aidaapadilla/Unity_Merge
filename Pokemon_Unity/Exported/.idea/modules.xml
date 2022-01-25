@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Exported.iml" filepath="$PROJECT_DIR$/.idea/modules/Exported.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/launcher/Exported.launcher.iml" filepath="$PROJECT_DIR$/.idea/modules/launcher/Exported.launcher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/unityLibrary/Exported.unityLibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/unityLibrary/Exported.unityLibrary.iml" />
+    </modules>
+  </component>
+</project>

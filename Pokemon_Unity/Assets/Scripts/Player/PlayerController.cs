@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour, iSavable
     public event Action<Collider2D> OnEnteredTrainersView;
     public event Action OnEncountered;
     private Vector2 input;
+    public GameController gameController;
+    private int skin;
 
 
     private Animator animator;
@@ -28,20 +30,14 @@ public class PlayerController : MonoBehaviour, iSavable
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        gameController = GameObject.FindObjectOfType<GameController>();
     }
-    
+
 
     public void HandleUpdate()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            changeSkin = true;
-        }
-        else
-        {
-            changeSkin = false;
-        }
-        if(!isMoving)
+        skin = gameController.getAvatar;
+        if (!isMoving)
         {
             input.x = Input.GetAxisRaw("Horizontal");
             input.y = Input.GetAxisRaw("Vertical");
@@ -63,8 +59,8 @@ public class PlayerController : MonoBehaviour, iSavable
         }
 
         animator.SetBool("isMoving", isMoving);
-        animator.SetBool("changeSkin", changeSkin);
-        if(Input.GetKeyDown(KeyCode.Z))
+        animator.SetInteger("skin", skin);
+        if (Input.GetKeyDown(KeyCode.Z))
         {
             Interact();
         }

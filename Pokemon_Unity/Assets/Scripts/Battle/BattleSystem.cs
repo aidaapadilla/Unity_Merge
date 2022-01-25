@@ -32,6 +32,12 @@ public class BattleSystem : MonoBehaviour
 
     public event Action<bool> OnBattleOver;
 
+    public void getAndroidInfo(string name1, string name2, string name3, string obj1, string obj2, string obj3)
+    {
+        playerParty.getPokemons(name1, name2, name3);
+    }
+
+
     public void StartBattle(PokemonParty playerParty2, Pokemon wildPokemon2) 
     {
         playerParty = playerParty2;

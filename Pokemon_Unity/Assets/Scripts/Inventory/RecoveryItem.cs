@@ -22,6 +22,7 @@ public class RecoveryItem : ItemBase
     [SerializeField] bool revive;
     [SerializeField] bool maxRevive;
 
+
     public override bool Use(Pokemon pokemon)
     {
         // Revive

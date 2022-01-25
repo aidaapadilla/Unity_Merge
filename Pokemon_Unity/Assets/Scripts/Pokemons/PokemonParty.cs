@@ -18,10 +18,10 @@ public class PokemonParty : MonoBehaviour
 
     private void Start()
     {
-        foreach (var pokemon in pokemons)
-        {
-            pokemon.Init();
-        }
+        //foreach (var pokemon in pokemons)
+        //{
+        //    pokemon.Init();
+        //}
     }
     public Pokemon GetHealthyPokemon()
     {
@@ -44,6 +44,22 @@ public class PokemonParty : MonoBehaviour
             //Choose a pokemon
             return false;
         }
+    }
+    public void getPokemons(String name1, String name2, String name3)
+    {
+        PokemonBase poke1 = PokemonDB.GetPokemonByName(name1);
+        Pokemon pokemon1 = new Pokemon(poke1, 2);
+        pokemons.Add(pokemon1);
+
+        PokemonBase poke2 = PokemonDB.GetPokemonByName(name1);
+        Pokemon pokemon2 = new Pokemon(poke2, 2);
+        pokemons.Add(pokemon2);
+
+        PokemonBase poke3 = PokemonDB.GetPokemonByName(name1);
+        Pokemon pokemon3 = new Pokemon(poke3, 2);
+        pokemons.Add(pokemon3);
+
+
     }
     public static PokemonParty GetPlayerParty()
     {

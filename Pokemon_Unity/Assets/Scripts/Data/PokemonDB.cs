@@ -33,4 +33,21 @@ public class PokemonDB : MonoBehaviour
 
         return pokemons[name];
     }
+    public static List<PokemonBase> GetPokemonsAndroid(string name1, string name2, string name3)
+    {
+        List<PokemonBase> pokemons = new List<PokemonBase>();
+        if (name1 != null)
+        {
+            pokemons.Add(GetPokemonByName(name1));
+        }
+        if (name2 != null)
+        {
+            pokemons.Add(GetPokemonByName(name2));
+        }
+        if (name3 != null)
+        {
+            pokemons.Add(GetPokemonByName(name3));
+        }
+        return pokemons;
+    }
 }

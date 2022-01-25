@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour, iSavable
 {
     [SerializeField] string name;
     [SerializeField] Transform spawnPoint;
-    public int sceneToLoad;
+    public int sceneToLoad = 0;
     public float moveSpeed;
     public LayerMask solidObjectLayer;
     public LayerMask grassLayer;
@@ -144,9 +144,12 @@ public class PlayerController : MonoBehaviour, iSavable
     }
     IEnumerator SwitchScene()
     {
-
+        if ((animator.GetFloat("moveY")) > 0.0f)
+        {
+            sceneToLoad++;
+            gameController.setScene(sceneToLoad);
+        }
         yield return SceneManager.LoadSceneAsync(sceneToLoad);
-        sceneToLoad = 0;
 
     }
     private void CheckIfTrainersView()

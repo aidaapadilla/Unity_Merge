@@ -31,10 +31,13 @@ public class BattleSystem : MonoBehaviour
     int escapeAttempts;
 
     public event Action<bool> OnBattleOver;
-
-    public void getAndroidInfo(string name1, string name2, string name3, string obj1, string obj2, string obj3)
+    public void getAndroidInfo(PokemonParty playerparty,string name1, string name2, string name3, string obj1, string obj2, string obj3)
     {
-        playerParty.getPokemons(name1, name2, name3);
+        playerParty.getPokemons("Squirtle", "Bulbasaur", "Squirtle");
+    }
+    public string GetExperience()
+    {
+        return playerUnit.getPoints().ToString();
     }
 
 
@@ -97,6 +100,7 @@ public class BattleSystem : MonoBehaviour
         ActionSelection();
     }
 
+
     void BattleOver(bool won)
     {
         state = BattleState.BattleOver;
@@ -137,14 +141,23 @@ public class BattleSystem : MonoBehaviour
                 inventoryUI.gameObject.SetActive(false);
                 state = BattleState.ActionSelection;
             };
-            Action onItemUsed = () =>
+            Action<ItemBase> onItemUsed = (ItemBase usedItem) =>
             {
-                state = BattleState.Busy;
-                inventoryUI.gameObject.SetActive(false);
-                StartCoroutine(RunTurns(BattleAction.UseItem));
+                StartCoroutine(OnItemUsed(usedItem));
             };
             inventoryUI.HandleUpdate(onBack, onItemUsed);
         }
+    }
+    IEnumerator OnItemUsed(ItemBase usedItem)
+    {
+        state = BattleState.Busy;
+        inventoryUI.gameObject.SetActive(false);
+        if(usedItem is PokeballItem)
+        {
+            yield return ThrowPokeball();
+        }
+        StartCoroutine(RunTurns(BattleAction.UseItem));
+
     }
     void MoveSelection()
     {

@@ -18,10 +18,10 @@ public class PokemonParty : MonoBehaviour
 
     private void Start()
     {
-        //foreach (var pokemon in pokemons)
-        //{
-        //    pokemon.Init();
-        //}
+        foreach (var pokemon in pokemons)
+        {
+            pokemon.Init();
+        }
     }
     public Pokemon GetHealthyPokemon()
     {

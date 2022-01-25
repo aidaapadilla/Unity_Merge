@@ -20,7 +20,7 @@ public class InventoryUI : MonoBehaviour
 
     [SerializeField] PartyScreen partyScreen;
 
-    Action onItemUsed;
+    Action<ItemBase> onItemUsed;
     int selectedItem = 0;
     int selectedCategory = 0;
     InventoryUIState state;
@@ -49,6 +49,7 @@ public class InventoryUI : MonoBehaviour
             Destroy(child.gameObject);
 
         slotUIList = new List<ItemSlotUI>();
+
         foreach (var itemSlot in inventory.GetSlotsByCategory(selectedCategory)) 
         {
             var slotUIObj = Instantiate(itemSlotUI, itemList.transform);
@@ -60,7 +61,7 @@ public class InventoryUI : MonoBehaviour
         UpdateItemSelection();
     }
 
-    public void HandleUpdate(Action onBack, Action onItemUsed=null)
+    public void HandleUpdate(Action onBack,Action<ItemBase> onItemUsed=null)
     {
         this.onItemUsed = onItemUsed;
         if (state == InventoryUIState.ItemSelection)
@@ -78,7 +79,10 @@ public class InventoryUI : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.LeftArrow))
                 --selectedCategory;
 
-            selectedItem = Mathf.Clamp(selectedItem, 0, inventory.GetSlotsByCategory(selectedCategory).Count - 1);
+            if (selectedCategory > Inventory.ItemCategories.Count - 1)
+                selectedCategory = 0;
+
+            selectedItem = Mathf.Clamp(selectedItem, 0, 2);
             selectedCategory = Mathf.Clamp(selectedCategory, 0, Inventory.ItemCategories.Count - 1);
 
 
@@ -94,7 +98,7 @@ public class InventoryUI : MonoBehaviour
             }
 
             if (Input.GetKeyDown(KeyCode.Z))
-                OpenPartyScreen();
+                ItemSelected();
 
             else if (Input.GetKeyDown(KeyCode.X))
                 onBack?.Invoke();
@@ -114,6 +118,18 @@ public class InventoryUI : MonoBehaviour
             partyScreen.HandleUpdate(onSelected, onBackPartyScreen);
         }
     }
+    void ItemSelected()
+    {
+        if (selectedCategory == (int)ItemCategory.Pokeballs)
+        {
+            StartCoroutine(UseItem());
+        }
+        else
+        {
+            OpenPartyScreen();
+        }
+
+    }
 
     void UpdateItemSelection()
     {
@@ -126,10 +142,12 @@ public class InventoryUI : MonoBehaviour
                 slotUIList[i].NameText.color = Color.black;
         }
         selectedItem = Mathf.Clamp(selectedItem, 0, slots.Count - 1);
-
-        var item = slots[selectedItem].Item;
-        itemIcon.sprite = item.Icon;
-        itemDescription.text = item.Description;
+        if (slots.Count > 0)
+        {
+            var item = slots[selectedItem].Item;
+            itemIcon.sprite = item.Icon;
+            itemDescription.text = item.Description;
+        }
 
         HandleScrolling();
     }
@@ -140,7 +158,7 @@ public class InventoryUI : MonoBehaviour
         if (usedItem != null)
         {
             yield return DialogManager.Instance.ShowDialogText($"The player used {usedItem.Name}");
-            onItemUsed?.Invoke();
+            onItemUsed?.Invoke(usedItem);
         }
         else
         {
@@ -175,5 +193,6 @@ public class InventoryUI : MonoBehaviour
         state = InventoryUIState.ItemSelection;
         partyScreen.gameObject.SetActive(false);
     }
+
 
 }

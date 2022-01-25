@@ -18,16 +18,16 @@ public class GameController : MonoBehaviour
     //Enviat desde Android
     public string iduser;
     public string charactername;
-    public string pokemon1;
-    public string pokemon2;
-    public string pokemon3;
+    public string pokemon1="Charmander";
+    public string pokemon2="Bulbasaur";
+    public string pokemon3="Charmander";
     public string object1;
     public string object2;
     public string object3;
     public int skin;
 
     //Enviat a Unity
-    public string map;
+    public int map;
     public string experience;
 
     public static GameController Instance { get; private set; }
@@ -35,6 +35,10 @@ public class GameController : MonoBehaviour
     public int getAvatar
     {
         get { return skin; }
+    }
+    public void setScene(int scenetoLoad)
+    {
+        map = scenetoLoad;
     }
     private void Awake()
     {
@@ -148,7 +152,6 @@ public class GameController : MonoBehaviour
              state = GameState.FreeRoam;
          };
         menuController.onMenuSelected += OnMenuSelected;
-        battleSystem.getAndroidInfo(pokemon1, pokemon2, pokemon3, object1, object2, object3);
     }
 
     void StartBattle()
@@ -233,13 +236,8 @@ public class GameController : MonoBehaviour
                 inventoryUI.gameObject.SetActive(false);
                 state = GameState.FreeRoam;
             };
-            Action onItemUsed = () =>
-            {
-                //state = GameState.Bag;
-                inventoryUI.gameObject.SetActive(false);
-                //StartCoroutine(RunTurns(BattleAction.UseItem));
-            };
-            inventoryUI.HandleUpdate(onBack, onItemUsed);
+            
+            inventoryUI.HandleUpdate(onBack);
         }
     }
     void OnMenuSelected(int selectedItem)
@@ -259,14 +257,14 @@ public class GameController : MonoBehaviour
         }
         else if (selectedItem == 2)
         {
+            experience = battleSystem.GetExperience();
 #if UNITY_ANDROID
             AndroidJavaClass UnityPlayer = new AndroidJavaClass("dsa.ejercicios_practica.pokemon_android.IntegrationUnity");
 
-            experience = "27";
             Debug.Log("The experience sent is "+experience);
-            map="SampleScene";
-            Debug.Log("The map sent is "+map);
-            UnityPlayer.CallStatic("getInformationUnity", experience, map, charactername);
+            String map2 = map.ToString();
+            Debug.Log("The map sent is "+map2);
+            UnityPlayer.CallStatic("getInformationUnity", experience, map2, charactername);
             Debug.Log("Information sent");
 
             Debug.Log("Before closing game");

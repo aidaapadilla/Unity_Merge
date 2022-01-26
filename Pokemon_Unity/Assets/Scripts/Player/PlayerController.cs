@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour, iSavable
 
     private void Awake()
     {
+        sceneToLoad = 0;
         animator = GetComponent<Animator>();
         gameController = GameObject.FindObjectOfType<GameController>();
     }
@@ -147,7 +148,6 @@ public class PlayerController : MonoBehaviour, iSavable
         if ((animator.GetFloat("moveY")) > 0.0f)
         {
             sceneToLoad++;
-            gameController.setScene(sceneToLoad);
         }
         yield return SceneManager.LoadSceneAsync(sceneToLoad);
 
